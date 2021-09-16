@@ -178,6 +178,226 @@ async def promote(promt):
         )
 
 
+@register(outgoing=True, disable_errors=True, pattern=r"^\.anonall(?: |$)(.*)")
+async def promote(promt):
+    """For .anonall command, promotes the replied/tagged person"""
+    # Get targeted chat
+    chat = await promt.get_chat()
+    # Grab admin status or creator in a chat
+    admin = chat.admin_rights
+    creator = chat.creator
+
+    # If not admin and not creator, also return
+    if not admin and not creator:
+        return await promt.edit(NO_ADMIN)
+
+    new_rights = ChatAdminRights(
+        add_admins=True,
+        invite_users=True,
+        change_info=True,
+        ban_users=True,
+        delete_messages=True,
+        pin_messages=True,
+        anonymous=True,
+        manage_call=True,
+    )
+
+    await promt.edit("`Wait...`")
+    user, rank = await get_user_from_event(promt)
+    if not rank:
+        rank = "ㅤㅤ"  # Just in case.
+    if user:
+        pass
+    else:
+        return
+
+    # Try to promote if current user is admin or creator
+    try:
+        await promt.client(EditAdminRequest(promt.chat_id, user.id, new_rights, rank))
+        await promt.edit("`Promoted Anonymous Successfully!`")
+    except RightForbiddenError:
+        return await promt.edit(NO_PERM)
+
+    # If Telethon spit BadRequestError, assume
+    # we don't have Promote permission
+    except BadRequestError:
+        return await promt.edit(NO_PERM)
+
+    # Announce to the logging group if we have promoted successfully
+    if BOTLOG:
+        await promt.client.send_message(
+            BOTLOG_CHATID,
+            "#PROMOTE_TO_ANONYMOUS\n"
+            f"USER: [{user.first_name}](tg://user?id={user.id})\n"
+            f"CHAT: {promt.chat.title}(`{promt.chat_id}`)",
+        )
+
+
+@register(outgoing=True, disable_errors=True, pattern=r"^\.anon(?: |$)(.*)")
+async def promote(promt):
+    """For .anon command, promotes the replied/tagged person"""
+    # Get targeted chat
+    chat = await promt.get_chat()
+    # Grab admin status or creator in a chat
+    admin = chat.admin_rights
+    creator = chat.creator
+
+    # If not admin and not creator, also return
+    if not admin and not creator:
+        return await promt.edit(NO_ADMIN)
+
+    new_rights = ChatAdminRights(
+        add_admins=False,
+        invite_users=True,
+        change_info=False,
+        ban_users=True,
+        delete_messages=True,
+        pin_messages=True,
+        anonymous=True,
+        manage_call=True,
+    )
+
+    await promt.edit("`Wait...`")
+    user, rank = await get_user_from_event(promt)
+    if not rank:
+        rank = "ㅤㅤ"  # Just in case.
+    if user:
+        pass
+    else:
+        return
+
+    # Try to promote if current user is admin or creator
+    try:
+        await promt.client(EditAdminRequest(promt.chat_id, user.id, new_rights, rank))
+        await promt.edit("`Promoted Anonymous Successfully!`")
+    except RightForbiddenError:
+        return await promt.edit(NO_PERM)
+
+    # If Telethon spit BadRequestError, assume
+    # we don't have Promote permission
+    except BadRequestError:
+        return await promt.edit(NO_PERM)
+
+    # Announce to the logging group if we have promoted successfully
+    if BOTLOG:
+        await promt.client.send_message(
+            BOTLOG_CHATID,
+            "#PROMOTE_TO_ANONYMOUS\n"
+            f"USER: [{user.first_name}](tg://user?id={user.id})\n"
+            f"CHAT: {promt.chat.title}(`{promt.chat_id}`)",
+        )
+
+
+@register(outgoing=True, disable_errors=True, pattern=r"^\.unanonall(?: |$)(.*)")
+async def promote(promt):
+    """For .unanonall command, replied/tagged person"""
+    # Get targeted chat
+    chat = await promt.get_chat()
+    # Grab admin status or creator in a chat
+    admin = chat.admin_rights
+    creator = chat.creator
+
+    # If not admin and not creator, also return
+    if not admin and not creator:
+        return await promt.edit(NO_ADMIN)
+
+    new_rights = ChatAdminRights(
+        add_admins=True,
+        invite_users=True,
+        change_info=True,
+        ban_users=True,
+        delete_messages=True,
+        pin_messages=True,
+        anonymous=False,
+        manage_call=True,
+    )
+
+    await promt.edit("`Wait...`")
+    user, rank = await get_user_from_event(promt)
+    if not rank:
+        rank = "ㅤㅤ"  # Just in case.
+    if user:
+        pass
+    else:
+        return
+
+    # Try to promote if current user is admin or creator
+    try:
+        await promt.client(EditAdminRequest(promt.chat_id, user.id, new_rights, rank))
+        await promt.edit("`Unanonymous Successfully!`")
+    except RightForbiddenError:
+        return await promt.edit(NO_PERM)
+
+    # If Telethon spit BadRequestError, assume
+    # we don't have Promote permission
+    except BadRequestError:
+        return await promt.edit(NO_PERM)
+
+    # Announce to the logging group if we have promoted successfully
+    if BOTLOG:
+        await promt.client.send_message(
+            BOTLOG_CHATID,
+            "#UnAnonAll\n"
+            f"USER: [{user.first_name}](tg://user?id={user.id})\n"
+            f"CHAT: {promt.chat.title}(`{promt.chat_id}`)",
+        )
+
+
+@register(outgoing=True, disable_errors=True, pattern=r"^\.unanon(?: |$)(.*)")
+async def promote(promt):
+    """For .unanon command, replied/tagged person"""
+    # Get targeted chat
+    chat = await promt.get_chat()
+    # Grab admin status or creator in a chat
+    admin = chat.admin_rights
+    creator = chat.creator
+
+    # If not admin and not creator, also return
+    if not admin and not creator:
+        return await promt.edit(NO_ADMIN)
+
+    new_rights = ChatAdminRights(
+        add_admins=False,
+        invite_users=True,
+        change_info=False,
+        ban_users=True,
+        delete_messages=True,
+        pin_messages=True,
+        anonymous=False,
+        manage_call=True,
+    )
+
+    await promt.edit("`Wait...`")
+    user, rank = await get_user_from_event(promt)
+    if not rank:
+        rank = "Admin"  # Just in case.
+    if user:
+        pass
+    else:
+        return
+
+    # Try to promote if current user is admin or creator
+    try:
+        await promt.client(EditAdminRequest(promt.chat_id, user.id, new_rights, rank))
+        await promt.edit("`Unanonymous Successfully!`")
+    except RightForbiddenError:
+        return await promt.edit(NO_PERM)
+
+    # If Telethon spit BadRequestError, assume
+    # we don't have Promote permission
+    except BadRequestError:
+        return await promt.edit(NO_PERM)
+
+    # Announce to the logging group if we have promoted successfully
+    if BOTLOG:
+        await promt.client.send_message(
+            BOTLOG_CHATID,
+            "#UnAnon\n"
+            f"USER: [{user.first_name}](tg://user?id={user.id})\n"
+            f"CHAT: {promt.chat.title}(`{promt.chat_id}`)",
+        )
+
+
 @register(outgoing=True, disable_errors=True, pattern=r"^\.demote(?: |$)(.*)")
 async def demote(dmod):
     """For .demote command, demotes the replied/tagged person"""
@@ -963,6 +1183,8 @@ CMD_HELP.update(
     {
         "admin": ">`.promote <username/reply> <custom rank (optional)>`"
         "\nUsage: Provides admin rights to the person in the chat."
+        "\n\n>`.anonall / .anon / .unanonall / .unanon <username/reply>`"
+        "\nUsage: .anonall = admin anon full permission. .anon = admin anon default permission."
         "\n\n>`.demote <username/reply>`"
         "\nUsage: Revokes the person's admin permissions in the chat."
         "\n\n>`.ban <username/reply> <reason (optional)>`"
