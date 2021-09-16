@@ -29,9 +29,9 @@ useragent = (
 opener.addheaders = [("User-agent", useragent)]
 
 
-@register(outgoing=True, pattern=r"^\.reverse(?: |$)(\d*)")
+@register(outgoing=True, pattern=r"^\.grs(?: |$)(\d*)")
 async def okgoogle(img):
-    """For .reverse command, Google search images and stickers."""
+    """For .grs command, Google search images and stickers."""
     if os.path.isfile("okgoogle.png"):
         os.remove("okgoogle.png")
 
@@ -157,7 +157,7 @@ async def ParseSauce(googleurl):
 
 CMD_HELP.update(
     {
-        "reverse": ">`.reverse [counter] <optional>`"
+        "grs": ">`.grs [counter] <optional>`"
         "\nUsage: Reply to a pic/sticker to reverse-search it on Google Images."
         "\nNumber of results can be specified, default is 3."
         "\nIf counter is 0, only info and links will be provided."
