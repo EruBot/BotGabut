@@ -104,10 +104,10 @@ async def _neonime(event):
 @register(outgoing=True, pattern=r"^\.sm ?(.*)")
 async def _neonime(event):
     await event.edit("`please wait...`")
-    url = "https://samehadaku.vip/"
+    url = "https://194.163.183.129/"
     ht_ = requests.get(url).text
     _bs = bs(ht_, "html.parser")
-    bd_ = _bs.findAll("div", class_="animposx")
+    bd_ = _bs.findAll("h2", class_="entry-title")
     out = "<b>➲ Samehadaku > New Episode:</b>\n═════════════════\n"
     for kntl_ in bd_:
         _lucu = kntl_.find("a")
