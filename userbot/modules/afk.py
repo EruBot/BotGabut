@@ -274,56 +274,6 @@ async def type_afk_is_not_true(notafk):
         AFKREASON = None
 
 
-@register(outgoing=True, pattern=r"^\.mafk(?: |$)(.*)", disable_errors=True)
-async def _(event):
-    "To mark yourself as afk i.e. Away from keyboard (supports media)"
-    reply = await event.get_reply_message()
-    media_t = media_type(reply)
-    if media_t == "Sticker" or not media_t:
-        return await edit_or_reply(
-            event, "`You haven't replied to any media to activate media afk`"
-        )
-    if not BOTLOG:
-        return await edit_or_reply(
-            event, "`To use media afk you need to set PRIVATE_GROUP_BOT_API_ID config`"
-        )
-    AFK_.USERAFK_ON = {}
-    AFK_.afk_time = None
-    AFK_.last_afk_message = {}
-    AFK_.afk_end = {}
-    AFK_.media_afk = None
-    AFK_.afk_type = "media"
-    start_1 = datetime.now()
-    AFK_.afk_on = True
-    AFK_.afk_star = start_1.replace(microsecond=0)
-    if not AFK_.USERAFK_ON:
-        input_str = event.pattern_match.group(1)
-        AFK_.reason = input_str
-        last_seen_status = await event.client(
-            functions.account.GetPrivacyRequest(types.InputPrivacyKeyStatusTimestamp())
-        )
-        if isinstance(last_seen_status.rules, types.PrivacyValueAllowAll):
-            AFK_.afk_time = datetime.now()
-        AFK_.USERAFK_ON = f"on: {AFK_.reason}"
-        if AFK_.reason:
-            await edit_delete(
-                event, f"`I shall be Going afk! because ~` {AFK_.reason}", 5
-            )
-        else:
-            await edit_delete(event, "`I shall be Going afk! `", 5)
-        AFK_.media_afk = await reply.forward_to(BOTLOG_CHATID)
-        if AFK_.reason:
-            await event.client.send_message(
-                BOTLOG_CHATID,
-                f"#AFKTRUE \nSet AFK mode to True, and Reason is {AFK_.reason}",
-            )
-        else:
-            await event.client.send_message(
-                BOTLOG_CHATID,
-                "#AFKTRUE \nSet AFK mode to True, and Reason is Not Mentioned",
-            )
-
-
 CMD_HELP.update(
     {
         "afk": ">`.off [Optional Reason]`"
