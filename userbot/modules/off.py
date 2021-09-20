@@ -305,7 +305,7 @@ async def afk_on_pm(sender):
                 COUNT_MSG = COUNT_MSG + 1
 
 
-@register(outgoing=True, pattern=r"^\.mafk(?: |$)(.*)", disable_errors=True)
+@register(outgoing=True, pattern=r"^\.mafk(?: |$)(.*)", disable_errors=False)
 async def _(event):
     if event.fwd_from:
         return
