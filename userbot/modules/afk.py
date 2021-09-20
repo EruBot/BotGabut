@@ -276,50 +276,52 @@ async def type_afk_is_not_true(notafk):
 
 @register(outgoing=True, pattern=r"^\.mafk(?: |$)(.*)", disable_errors=True)
 async def _(event):
-    if event.fwd_from:
-        return
-    global USER_AFK  # pylint:disable=E0602
-    global afk_time  # pylint:disable=E0602
-    global last_afk_message  # pylint:disable=E0602
-    global afk_start
-    global afk_end
-    global reason
-    global pic
-    USER_AFK = {}
-    afk_time = None
-    last_afk_message = {}
-    afk_end = {}
-    start_1 = datetime.now()  # Originally by @NOOB_GUY_OP
-    # I think its first for DARKCOBRA
-    afk_start = start_1.replace(microsecond=0)
-    reason = event.pattern_match.group(1)
-    pic = event.pattern_match.group(2)
-    if not USER_AFK:  # pylint:disable=E0602
-        last_seen_status = await register(  # pylint:disable=E0602
+    "To mark yourself as afk i.e. Away from keyboard (supports media)"
+    reply = await event.get_reply_message()
+    media_t = media_type(reply)
+    if media_t == "Sticker" or not media_t:
+        return await edit_or_reply(
+            event, "`You haven't replied to any media to activate media afk`"
+        )
+    if not BOTLOG:
+        return await edit_or_reply(
+            event, "`To use media afk you need to set PRIVATE_GROUP_BOT_API_ID config`"
+        )
+    AFK_.USERAFK_ON = {}
+    AFK_.afk_time = None
+    AFK_.last_afk_message = {}
+    AFK_.afk_end = {}
+    AFK_.media_afk = None
+    AFK_.afk_type = "media"
+    start_1 = datetime.now()
+    AFK_.afk_on = True
+    AFK_.afk_star = start_1.replace(microsecond=0)
+    if not AFK_.USERAFK_ON:
+        input_str = event.pattern_match.group(1)
+        AFK_.reason = input_str
+        last_seen_status = await event.client(
             functions.account.GetPrivacyRequest(types.InputPrivacyKeyStatusTimestamp())
-        )  # Originally by @NOOB_GUY_OP
-        # I think its first for DARKCOBRA
+        )
         if isinstance(last_seen_status.rules, types.PrivacyValueAllowAll):
-            afk_time = datetime.datetime.now()  # pylint:disable=E0602
-        USER_AFK = f"yes: {reason} {pic}"  # pylint:disable=E0602
-        if reason:
-            await register.send_message(
-                event.chat_id,
-                f"**I shall be Going afk!** __because ~ {reason}__",
-                file=pic,
+            AFK_.afk_time = datetime.now()
+        AFK_.USERAFK_ON = f"on: {AFK_.reason}"
+        if AFK_.reason:
+            await edit_delete(
+                event, f"`I shall be Going afk! because ~` {AFK_.reason}", 5
             )
         else:
-            await register.send_message(event.chat_id, f"**I am Going afk!**", file=pic)
-        await asyncio.sleep(5)
-        await event.delete()
-        try:
-            await register.send_message(  # pylint:disable=E0602
-                Config.BOTLOG_CHATID,  # pylint:disable=E0602
-                f"#MAFKTRUE \nSet MAFK mode to True, and Reason is {reason}",
-                file=pic,
+            await edit_delete(event, "`I shall be Going afk! `", 5)
+        AFK_.media_afk = await reply.forward_to(BOTLOG_CHATID)
+        if AFK_.reason:
+            await event.client.send_message(
+                BOTLOG_CHATID,
+                f"#AFKTRUE \nSet AFK mode to True, and Reason is {AFK_.reason}",
             )
-        except Exception as e:  # pylint:disable=C0103,W0703
-            logger.warn(str(e))  # pylint:disable=E0602
+        else:
+            await event.client.send_message(
+                BOTLOG_CHATID,
+                "#AFKTRUE \nSet AFK mode to True, and Reason is Not Mentioned",
+            )
 
 
 CMD_HELP.update(
