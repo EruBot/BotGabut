@@ -200,7 +200,7 @@ async def mention_afk(mention):
             if AFKREASON:
                 await mention.reply(
                     f"I'm AFK since {afk_since}.\
-                        \nReason: *{AFKREASON}*"
+                        \nReason: **{AFKREASON}**"
                 )
             else:
                 await mention.reply(str(choice(AFKSTR)))
@@ -213,7 +213,7 @@ async def mention_afk(mention):
                 if AFKREASON:
                     await mention.reply(
                         f"I'm still AFK since {afk_since}.\
-                            \nReason: *{AFKREASON}*"
+                            \nReason: **{AFKREASON}**"
                     )
                 else:
                     await mention.reply(str(choice(AFKSTR)))
