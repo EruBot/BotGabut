@@ -200,7 +200,7 @@ async def mention_afk(mention):
             if AFKREASON:
                 await mention.reply(
                     f"I'm AFK since {afk_since}.\
-                        \nReason: `{AFKREASON}`"
+                        \nReason: *{AFKREASON}*"
                 )
             else:
                 await mention.reply(str(choice(AFKSTR)))
@@ -213,7 +213,7 @@ async def mention_afk(mention):
                 if AFKREASON:
                     await mention.reply(
                         f"I'm still AFK since {afk_since}.\
-                            \nReason: `{AFKREASON}`"
+                            \nReason: *{AFKREASON}*"
                     )
                 else:
                     await mention.reply(str(choice(AFKSTR)))
@@ -303,54 +303,6 @@ async def afk_on_pm(sender):
                         await sender.reply(str(choice(AFKSTR)))
                 USERS[sender.sender_id] = USERS[sender.sender_id] + 1
                 COUNT_MSG = COUNT_MSG + 1
-
-
-@register(outgoing=True, pattern=r"^\.mafk(?: |$)(.*)", disable_errors=False)
-async def _(event):
-    if event.fwd_from:
-        return
-    global USER_AFK  # pylint:disable=E0602
-    global afk_time  # pylint:disable=E0602
-    global last_afk_message  # pylint:disable=E0602
-    global afk_start
-    global afk_end
-    global reason
-    global pic
-    USER_AFK = {}
-    afk_time = None
-    last_afk_message = {}
-    afk_end = {}
-    start_1 = datetime.now()  # Originally by @NOOB_GUY_OP
-    # I think its first for DARKCOBRA
-    afk_start = start_1.replace(microsecond=0)
-    reason = event.pattern_match.group(1)
-    pic = event.pattern_match.group(2)
-    if not USER_AFK:  # pylint:disable=E0602
-        last_seen_status = await register(  # pylint:disable=E0602
-            functions.account.GetPrivacyRequest(types.InputPrivacyKeyStatusTimestamp())
-        )  # Originally by @NOOB_GUY_OP
-        # I think its first for DARKCOBRA
-        if isinstance(last_seen_status.rules, types.PrivacyValueAllowAll):
-            afk_time = datetime.datetime.now()  # pylint:disable=E0602
-        USER_AFK = f"yes: {reason} {pic}"  # pylint:disable=E0602
-        if reason:
-            await register.send_message(
-                event.chat_id,
-                f"**I shall be Going afk!** __because ~ {reason}__",
-                file=pic,
-            )
-        else:
-            await register.send_message(event.chat_id, f"**I am Going afk!**", file=pic)
-        await asyncio.sleep(5)
-        await event.delete()
-        try:
-            await register.send_message(  # pylint:disable=E0602
-                Config.BOTLOG_CHATID,  # pylint:disable=E0602
-                f"#MAFKTRUE \nSet MAFK mode to True, and Reason is {reason}",
-                file=pic,
-            )
-        except Exception as e:  # pylint:disable=C0103,W0703
-            logger.warn(str(e))  # pylint:disable=E0602
 
 
 CMD_HELP.update(
