@@ -24,6 +24,54 @@ from userbot import (  # noqa pylint: disable=unused-import isort:skip
 )
 
 
+@register(outgoing=True, pattern=r"^\.mafk(?: |$)(.*)", disable_errors=True)
+async def _(event):
+    if event.fwd_from:
+        return
+    global USER_AFK  # pylint:disable=E0602
+    global afk_time  # pylint:disable=E0602
+    global last_afk_message  # pylint:disable=E0602
+    global afk_start
+    global afk_end
+    global reason
+    global pic
+    USER_AFK = {}
+    afk_time = None
+    last_afk_message = {}
+    afk_end = {}
+    start_1 = datetime.now()  # Originally by @NOOB_GUY_OP
+    # I think its first for DARKCOBRA
+    afk_start = start_1.replace(microsecond=0)
+    reason = event.pattern_match.group(1)
+    pic = event.pattern_match.group(2)
+    if not USER_AFK:  # pylint:disable=E0602
+        last_seen_status = await register(  # pylint:disable=E0602
+            functions.account.GetPrivacyRequest(types.InputPrivacyKeyStatusTimestamp())
+        )  # Originally by @NOOB_GUY_OP
+        # I think its first for DARKCOBRA
+        if isinstance(last_seen_status.rules, types.PrivacyValueAllowAll):
+            afk_time = datetime.datetime.now()  # pylint:disable=E0602
+        USER_AFK = f"yes: {reason} {pic}"  # pylint:disable=E0602
+        if reason:
+            await register.send_message(
+                event.chat_id,
+                f"**I shall be Going afk!** __because ~ {reason}__",
+                file=pic,
+            )
+        else:
+            await register.send_message(event.chat_id, f"**I am Going afk!**", file=pic)
+        await asyncio.sleep(5)
+        await event.delete()
+        try:
+            await register.send_message(  # pylint:disable=E0602
+                Config.BOTLOG_CHATID,  # pylint:disable=E0602
+                f"#MAFKTRUE \nSet MAFK mode to True, and Reason is {reason}",
+                file=pic,
+            )
+        except Exception as e:  # pylint:disable=C0103,W0703
+            logger.warn(str(e))  # pylint:disable=E0602
+
+
 @register(incoming=True, disable_edited=True)
 async def mention_afk(mention):
     """This function takes care of notifying the people who mention you that you are AFK."""
