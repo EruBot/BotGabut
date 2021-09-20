@@ -86,7 +86,7 @@ async def _neonime(event):
     url = "https://nekonime.vip/"
     ht_ = requests.get(url).text
     _bs = bs(ht_, "html.parser")
-    bd_ = _bs.findAll("div", class_="col-md-4 col-sm-4")
+    bd_ = _bs.findAll("h3", class_="article-title")
     out = "<b>➲ Nekonime > New Episode:</b>\n═════════════════\n"
     for kntl_ in bd_:
         _lucu = kntl_.find("a")
