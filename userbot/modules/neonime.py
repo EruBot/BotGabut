@@ -166,6 +166,7 @@ async def _(event):
 
         p = link_download(1, url)
         for label_name in p["label"]:
+            msg += f"<b>From {url}</b>\n"
             msg += f"<b>↛ {label_name} {url} ↚</b>\n"
         for server_link in p["url"]:
             server_name = server_link["server"]
