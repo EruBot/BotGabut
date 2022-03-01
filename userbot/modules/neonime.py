@@ -42,7 +42,7 @@ async def _neonime(event):
     url = "https://nyaa.si/user/ohys"
     ht_ = requests.get(url).text
     _bs = bs(ht_, "html.parser")
-    bd_ = _bs.findAll("table", class_="table table-bordered table-hover table-striped torrent-list")
+    bd_ = _bs.findAll("tr", class_="default")
     out = "<b>➲ Nyaasi > Ohys-Raws:</b>\n═════════════════\n"
     for kntl_ in bd_:
         _lucu = kntl_.find("a")
