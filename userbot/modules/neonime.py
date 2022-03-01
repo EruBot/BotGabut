@@ -215,7 +215,7 @@ async def _(event):
         await event.edit(msg, parse_mode="html")
 
 
-@register(outgoing=True, pattern=r"^\.nll ?(.*)")
+@register(outgoing=True, pattern=r"^\.pp ?(.*)")
 async def _(event):
     url = event.pattern_match.group(1)
     if not url:
