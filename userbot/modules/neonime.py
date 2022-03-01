@@ -227,7 +227,7 @@ async def _(event):
         await event.edit("`please wait..`")
         msg = "<b>➲ Link Download:</b>\n"
 
-        p = link_download(1, url)
+        p = link_download(2, url)
         for label_name in p["label"]:
             msg += f"<b>From {url}</b>\n═════════════════\n"
             msg += f"<b>↛ {label_name} ↚</b>\n"
