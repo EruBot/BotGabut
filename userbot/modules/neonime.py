@@ -162,12 +162,12 @@ async def _(event):
         return
     else:
         await event.edit("`please wait..`")
-        msg = "<b>➲ Link Download:</b>\n═════════════════\n"
+        msg = "<b>➲ Link Download:</b>\n"
 
         p = link_download(1, url)
         for label_name in p["label"]:
-            msg += f"<b>From {url}</b>\n"
-            msg += f"<b>↛ {label_name} {url} ↚</b>\n"
+            msg += f"<b>From {url}</b>\n═════════════════\n"
+            msg += f"<b>↛ {label_name} ↚</b>\n"
         for server_link in p["url"]:
             server_name = server_link["server"]
             server_url = server_link["link"]
