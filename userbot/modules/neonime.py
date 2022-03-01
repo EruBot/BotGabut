@@ -215,6 +215,30 @@ async def _(event):
         await event.edit(msg, parse_mode="html")
 
 
+@register(outgoing=True, pattern=r"^\.nll ?(.*)")
+async def _(event):
+    url = event.pattern_match.group(1)
+    if not url:
+        await event.edit("Enter your episode url, see .help neonime")
+    elif "https://" not in url:
+        await event.edit("Enter url")
+        return
+    else:
+        await event.edit("`please wait..`")
+        msg = "<b>➲ Link Download:</b>\n"
+
+        p = link_download(1, url)
+        for label_name in p["label"]:
+            msg += f"<b>From {url}</b>\n═════════════════\n"
+            msg += f"<b>↛ {label_name} ↚</b>\n"
+        for server_link in p["url"]:
+            server_name = server_link["server"]
+            server_url = server_link["link"]
+            msg += f"➣ <a href='{server_url}'>{server_name}</a>\n"
+
+            await event.edit(msg, parse_mode="html")
+
+
 CMD_HELP.update(
     {
         "neonime": "**neonime**"
