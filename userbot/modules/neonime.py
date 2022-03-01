@@ -205,14 +205,6 @@ async def _(event):
             server_url = server_link["link"]
             msg += f"➣ <a href='{server_url}'>{server_name}</a>\n"
 
-        p = link_download(5, url)
-        for label_name in p["label"]:
-            msg += f"\n<b>↛ {label_name} raw ↚</b>\n"
-        for server_link in p["url"]:
-            server_name = server_link["server"]
-            server_url = server_link["link"]
-            msg += f"➣ {server_url}\n"
-
 #        p = link_download(6, url)
 #        for label_name in p["label"]:
 #            msg += f"\n<b>↛ {label_name} ↚</b>\n"
