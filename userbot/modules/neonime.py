@@ -249,8 +249,9 @@ async def _(event):
             server_name = server_link["server"]
             server_url = server_link["link"]
             msg += f"➣ <a href='{server_url}'>{server_name}</a>\n"
-        await event.edit(msg, parse_mode="html")
 """
+        await event.edit(msg, parse_mode="html")
+
 
 CMD_HELP.update(
     {
