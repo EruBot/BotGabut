@@ -25,8 +25,8 @@ async def _(event):
         altimg = neopage.find(itemprop="image")
         ttl = altimg["alt"]
         msg = f"<b>➲ Sinopsis <a href='{url}'>{ttl}</a></b>\n"
-        bts = 7*"="
-        msg += f"\n{bts}\n"
+        bts = 7*"═"
+        msg += f"{bts}\n"
         neos = neopage.find("div", class_="contenidotv")
         neop = neos.find(itemprop="description")
         for sino in neop.find_all('p'):
