@@ -22,7 +22,7 @@ async def _(event):
         await event.edit("`please wait..`")
         neourl = requests.get(url)
         neopage = bs(neourl.content, 'html.parser')
-        altimg = soup.find(itemprop="image")
+        altimg = neopage.find(itemprop="image")
         ttl = altimg["alt"]
         msg = f"<b>➲ Sinopsis <a href='{url}'>{ttl}</a></b>\n"
         bts = 7*"="
