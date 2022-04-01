@@ -11,7 +11,7 @@ from userbot.events import register
 @register(outgoing=True, pattern=r"^\.kuso ?(.*)")
 async def _neonime(event):
     await event.edit("`please wait...`")
-    urll = "https://kusonime.com/"
+    urll = "https://kusonime.com/?s="
     url = event.pattern_match.group(1)
     url = url.replace(" ", "+")
     ht_ = requests.get(urll + url).text
