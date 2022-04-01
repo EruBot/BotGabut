@@ -15,8 +15,8 @@ async def _(event):
     url = event.pattern_match.group(1)
     if not url:
         await event.edit("Enter your anime url, see .help sinopsis")
-    elif "https://" not in url:
-        await event.edit("Enter url")
+    elif "https://neonime" not in url:
+        await event.edit("Enter neonime url")
         return
     else:
         await event.edit("`please wait..`")
@@ -32,7 +32,7 @@ async def _(event):
         for sino in neop.find_all('p'):
             msg += f"<b>{sino}</b>\n"
 
-        await event.edit(msg, parse_mode="html")
+        await event.edit(msg, link_preview=False, parse_mode="html")
 
 
 CMD_HELP.update(
