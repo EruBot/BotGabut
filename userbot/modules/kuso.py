@@ -1,5 +1,6 @@
 """
 Kuso search.
+t.me/erruuu
 """
 
 import requests
@@ -27,7 +28,7 @@ async def _neonime(event):
             _tt = re.sub(r"\s+Subtitle\s+Indonesia\s+Season.\d+", "", tt_)
             link = _lucu["href"]
             out += f"➣ <a href='{link}'>{_tt}</a>\n"
-            if len(out) > 1000:
+            if len(out) > 2048:
                 break
             await event.edit(out, parse_mode="html")
 
