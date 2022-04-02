@@ -20,7 +20,7 @@ import aiohttp
 import requests
 from bs4 import BeautifulSoup
 from humanize import naturalsize
-from js2py import EvalJs
+from Js2Py import EvalJs
 
 from userbot import CMD_HELP, USR_TOKEN
 from userbot.events import register
