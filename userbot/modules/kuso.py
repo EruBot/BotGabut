@@ -9,6 +9,7 @@ import re
 from userbot import CMD_HELP
 from userbot.events import register
 
+
 @register(outgoing=True, pattern=r"^\.kuso ?(.*)")
 async def _neonime(event):
     await event.edit("`please wait...`")
@@ -32,10 +33,7 @@ async def _neonime(event):
                 break
             await event.edit(out, parse_mode="html")
 
+
 CMD_HELP.update(
-    {
-        "kusonime": "**Kusonime**"
-        "\n ➲`.kuso` keyword"
-        "\n ➣ ex: `.kuso boruto`"
-    }
+    {"kusonime": "**Kusonime**" "\n ➲`.kuso` keyword" "\n ➣ ex: `.kuso boruto`"}
 )
